@@ -1,0 +1,18 @@
+// WARNING: Do not change config.h, the file is automatically generated when building
+#pragma once
+
+#include <glm/glm.hpp>
+
+constexpr char INSTALL_DIR[] = "${INSTALL_DIR}";
+constexpr char GAME_TITLE[] = "${GAME_TITLE}";
+constexpr char GAME_ASSETS_DIR[] = "${GAME_ASSETS_DIR}";
+constexpr char GAME_ASSETS_PATH[] = "${GAME_ASSETS_PATH}";
+constexpr char GAME_CONF_PATH[] = "${GAME_CONF_PATH}";
+constexpr char GAME_LEVELS_PATH[] = "${GAME_LEVELS_PATH}";
+
+constexpr glm::vec2 PLAYER_SIZE = {80.f, 18.f};
+constexpr float PLAYER_VELOCITY = 1000.f;
+constexpr float BALL_RADIUS = 9.f;
+constexpr glm::vec2 INITIAL_BALL_VELOCITY = {100.f, -350.f};
+constexpr glm::vec2 POWERUP_SIZE = {60.f, 20.f};
+constexpr glm::vec2 POWERUP_VELOCITY = {0.0f, 150.0f};

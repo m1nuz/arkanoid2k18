@@ -1,0 +1,139 @@
+{
+  "shaders": [
+    {
+      "name": "sprite_vs",
+      "source": "#version 330 core\nlayout (location = 0) in vec4 vertex;\n\nout vec2 texcoords;\n\nuniform mat4 model;\nuniform mat4 projection;\n\nvoid main() {\n    texcoords = vertex.zw;\n    gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);\n}"
+    },
+    {
+      "name": "sprite_fs",
+      "source": "#version 330 core\nin vec2 texcoords;\nout vec4 frag_color;\n\nuniform sampler2D image;\nuniform vec3 color;\n\nvoid main() {    \n    frag_color = vec4(color, 1.0) * texture(image, texcoords);\n}  "
+    },
+    {
+      "name": "particle_vs",
+      "source": "#version 330 core\nlayout (location = 0) in vec4 vertex;\nout vec2 texcoords;\nout vec4 particle_color;\n\nuniform mat4 projection;\nuniform vec2 offset;\nuniform vec4 color;\n\nvoid main() {\n    float scale = 10.0f;\n    texcoords = vertex.zw;\n    particle_color = color;\n    gl_Position = projection * vec4((vertex.xy * scale) + offset, 0.0, 1.0);\n}"
+    },
+    {
+      "name": "particle_fs",
+      "source": "#version 330 core\nin vec2 texcoords;\nin vec4 particle_color;\nout vec4 color;\n\nuniform sampler2D image;\n\nvoid main() {\n    color = (texture(image, texcoords) * particle_color);\n}"
+    },
+    {
+      "name": "postprocess_vs",
+      "source": "#version 330 core\nlayout (location = 0) in vec4 vertex;\n\nout vec2 texcoords;\n\nuniform bool shake;\nuniform float time;\n\nvoid main()\n{\n    gl_Position = vec4(vertex.xy, 0.0f, 1.0f); \n    texcoords = vertex.zw;\n    if (shake)\n    {\n        const float strength = 0.01;\n        gl_Position.xy += vec2(cos(time * 10) * strength, cos(time * 15) * strength);  \n    }\n}"
+    },
+    {
+      "name": "postprocess_fs",
+      "source": "#version 330 core\nin vec2 texcoords;\nout vec4 color;\n  \nuniform sampler2D scene;\nuniform vec2 offsets[9];\nuniform float blur_kernel[9];\n\nuniform bool shake;\n\nvoid main()\n{\n    color = vec4(0.0f);\n    vec3 sample[9];\n    if (shake)\n    {\n        for(int i = 0; i < 9; i++)\n            sample[i] = vec3(texture(scene, texcoords.st + offsets[i]));\n\n        for(int i = 0; i < 9; i++)\n            color += vec4(sample[i] * blur_kernel[i], 0.0f);\n\n        color.a = 1.0f;\n    } \n    else\n    {\n        color =  texture(scene, texcoords);\n    }\n}"
+    }
+  ],
+  "programs": [
+    {
+      "name": "sprite",
+      "vertex": "sprite_vs",
+      "fragment": "sprite_fs"
+    },
+    {
+      "name": "particle",
+      "vertex": "particle_vs",
+      "fragment": "particle_fs"
+    },
+    {
+      "name" : "postprocess",
+      "vertex": "postprocess_vs",
+      "fragment": "postprocess_fs"
+    }
+  ],
+  "textures": [
+    {
+      "name": "test",
+      "levels": [
+        "textures/texture.tga"
+      ]
+    },
+    {
+      "name": "background",
+      "levels": [
+        "textures/background.tga"
+      ]
+    },
+    {
+      "name": "block",
+      "levels": [
+        "textures/block_01.tga"
+      ]
+    },
+    {
+      "name": "block_solid",
+      "levels": [
+        "textures/block_solid_1.tga"
+      ]
+    },
+    {
+      "name": "paddle",
+      "levels": [
+        "textures/paddle.tga"
+      ]
+    },
+    {
+      "name": "ball",
+      "levels": [
+        "textures/ball_grey.tga"
+      ]
+    },
+    {
+      "name": "particle",
+      "levels": [
+        "textures/particle_1.tga"
+      ]
+    },
+    {
+      "name": "speed",
+      "levels": [
+        "textures/powerup_speed.tga"
+      ]
+    },
+    {
+      "name": "sticky",
+      "levels": [
+        "textures/powerup_sticky.tga"
+      ]
+    },
+    {
+      "name": "passthrough",
+      "levels": [
+        "textures/powerup_passthrough.tga"
+      ]
+    },
+    {
+      "name": "size-increase",
+      "levels": [
+        "textures/powerup_increase.tga"
+      ]
+    },
+    {
+      "name": "confuse",
+      "levels": [
+        "textures/powerup_confuse.tga"
+      ]
+    },
+    {
+      "name": "chaos",
+      "levels": [
+        "textures/powerup_chaos.tga"
+      ]
+    }
+  ],
+  "sounds": [
+    {
+      "name": "powerup",
+      "source": "sounds/powerup_positive.wav"
+    },
+    {
+      "name": "solid",
+      "source": "sounds/bop.wav"
+    },
+    {
+      "name": "bleep",
+      "source": "sounds/pong.wav"
+    }
+  ]
+}
