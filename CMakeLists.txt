@@ -4,6 +4,8 @@ project(arkanoid2k18)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+include(glm)
+
 set(APP_NAME arkanoid)
 set(INSTALL_DIR /usr/bin)
 set(GAME_ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)

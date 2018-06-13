@@ -8,7 +8,7 @@ else()
 
     ExternalProject_Add(glm PREFIX glm
         GIT_REPOSITORY https://github.com/g-truc/glm.git
-        GIT_TAG 0.9.7.6
+        GIT_TAG 0.9.8.5
 
         UPDATE_COMMAND "" BUILD_COMMAND "" INSTALL_COMMAND ""
 
