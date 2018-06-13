@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(arkanoid2k18)
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 set(APP_NAME arkanoid)
 set(INSTALL_DIR /usr/bin)
 set(GAME_ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
@@ -71,7 +73,7 @@ elseif (MSVC)
 endif()
 
 target_link_libraries(${APP_NAME} PUBLIC
-    ${SDL2_LIBRARIES}
+    ${SDL2_LIBRARY}
     ${OPENAL_LIBRARY}
 )
 
