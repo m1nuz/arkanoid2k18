@@ -29,13 +29,6 @@ set(SOURCES
 find_package(SDL2 REQUIRED)
 find_package(OpenAL REQUIRED)
 
-find_package(GLM QUIET)
-find_package(glm QUIET)
-if(NOT glm_FOUND AND NOT GLM_FOUND)
-message(FATAL_ERROR "GLM Not Found")
-endif()
-
-
 configure_file("${SHARED_INCLUDE_PATH}/config.h.in" "${SHARED_INCLUDE_PATH}/config.hh")
 
 add_executable(${APP_NAME} ${SOURCES} ${HEADERS})
