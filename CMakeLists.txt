@@ -5,10 +5,11 @@ project(arkanoid2k18)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 include(glm)
+include(assets)
 
 set(APP_NAME arkanoid)
 set(INSTALL_DIR /usr/bin)
-set(GAME_ASSETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+set(GAME_ASSETS_DIR ${CMAKE_CURRENT_BINARY_DIR}/assets)
 set(GAME_ASSETS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/assets.json)
 set(GAME_CONF_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/game.conf)
 set(GAME_LEVELS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/levels.json)
@@ -34,6 +35,8 @@ find_package(OpenAL REQUIRED)
 configure_file("${SHARED_INCLUDE_PATH}/config.h.in" "${SHARED_INCLUDE_PATH}/config.hh")
 
 add_executable(${APP_NAME} ${SOURCES} ${HEADERS})
+
+add_dependencies(${APP_NAME} demo_assets)
 
 #set_target_properties(${APP_NAME} PROPERTIES
 #    CXX_STANDARD 17
