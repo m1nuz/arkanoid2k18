@@ -11,7 +11,7 @@
 #include "video.hh"
 #include "shader_uniform.inl"
 
-namespace video {
+namespace video {    
 
     auto init(game::context_t &ctx) -> std::optional<context_t> {
         context_t r;
@@ -172,7 +172,7 @@ namespace video {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    static auto present_sprite(context_t &ctx, const game::sprite_t &sp) {
+    static auto present_sprite(context_t &ctx, const sprite_t &sp) {
         using namespace glm;
 
         auto model = translate(mat4{1}, vec3(sp.position, 0.0f));
@@ -282,7 +282,7 @@ namespace video {
     }
 
     auto draw_sprite(context_t &ctx, const resources::texture_t &texture, const vec2 &position, const vec2 &size, const float rotate, const vec3 &color) -> void {
-        game::sprite_t sp;
+        sprite_t sp;
         sp.texture = texture;
         sp.position = position;
         sp.size = size;

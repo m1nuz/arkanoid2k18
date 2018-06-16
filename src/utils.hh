@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <fstream>
 inline auto get_config(std::string_view path) -> std::optional<std::string> {
     using namespace std;

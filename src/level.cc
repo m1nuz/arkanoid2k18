@@ -46,8 +46,8 @@ namespace game {
 
                     object obj;
                     obj.texture = resources::get_texture(ctx, "block_solid").value_or(resources::texture_t{});
-                    obj.position = pos;
-                    obj.size = size;
+                    obj.body.current.position = pos;
+                    obj.body.current.size = size;
                     obj.color = vec3{0.8f, 0.8f, 0.7f};
                     obj.is_solid = true;
 
@@ -71,8 +71,8 @@ namespace game {
 
                     object obj;
                     obj.texture = resources::get_texture(ctx, "block").value_or(resources::texture_t{});
-                    obj.position = pos;
-                    obj.size = size;
+                    obj.body.current.position = pos;
+                    obj.body.current.size = size;
                     obj.color = get_color(tiles[y][x]);
 
                     level.bricks.push_back(obj);

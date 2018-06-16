@@ -50,7 +50,7 @@ extern auto main(int argc, char *argv[]) -> int {
                 timesteps++;
             }
 
-            game::draw(app.value(), render.value());
+            game::draw(app.value(), render.value(), accumulator / game::timestep);
 
             auto projection = glm::ortho(0.0f, static_cast<float>(app.value().width), static_cast<float>(app.value().height), 0.0f, -1.0f, 1.0f);
             auto view = glm::mat4{1.f};

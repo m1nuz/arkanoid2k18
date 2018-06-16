@@ -35,10 +35,10 @@ namespace game {
     static auto respawn_particle(particle_t &particle, const object &obj, const vec2 &offset) -> void {
         const auto rnd_pos = (random(0, 100) - 50) / 10.0f;
         const auto rnd_color = 0.5f + (random(0, 100) / 100.0f);
-        particle.position = obj.position + rnd_pos + offset;
+        particle.position = obj.body.current.position + rnd_pos + offset;
         particle.color = vec4{rnd_color, rnd_color, rnd_color, 1.0f};
         particle.life = 1.0f;
-        particle.velocity = obj.velocity * 0.1f;
+        particle.velocity = obj.body.current.velocity * 0.1f;
     }
 
     auto update_emitter(particle_emitter &emitter, const float dt, const object &obj, const size_t new_particles, const vec2 &offset) -> void {

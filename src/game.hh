@@ -11,6 +11,7 @@
 #include "particle_emitter.hh"
 #include "level.hh"
 #include "utils.hh"
+#include "physics.hh"
 
 namespace video {
 
@@ -35,17 +36,20 @@ namespace game {
     typedef struct sprite_type {
         sprite_type() = default;
 
+//        vec2 position = {0.f, 0.f};
+//        vec2 size = {1.f, 1.f};
+//        float rotate = 0;
+
+        physics::body body;
+
         resources::texture_t texture;
-        vec2 position = {0.f, 0.f};
-        vec2 size = {1.f, 1.f};
-        float rotate = 0;
         vec3 color = {1.f, 1.f, 1.f};
     } sprite_t;
 
     struct object : public sprite_type {
         object() = default;
 
-        vec2 velocity = {0.f, 0.f};
+        //vec2 velocity = {0.f, 0.f};
 
         bool is_solid = false;
         bool is_destroyed = false;
@@ -110,6 +114,6 @@ namespace game {
     auto start(context_t &ctx) -> bool;
     auto process_events(context_t &ctx, const float dt) -> void;
     auto update(context_t &ctx, audio::context_t &atx, const float dt) -> void;
-    auto draw(context_t &ctx, video::context_t &gtx) -> void;
+    auto draw(context_t &ctx, video::context_t &gtx, const float interpolation) -> void;
     auto cleanup(context_t &ctx) -> void;
 } // namespace game

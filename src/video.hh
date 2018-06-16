@@ -31,10 +31,20 @@ namespace video {
         OP_SHAKE = 1 << 0
     };
 
+    typedef struct sprite_type {
+        sprite_type() = default;
+
+        vec2 position = {0.f, 0.f};
+        vec2 size = {1.f, 1.f};
+        float rotate = 0;
+        resources::texture_t texture;
+        vec3 color = {1.f, 1.f, 1.f};
+    } sprite_t;
+
     typedef struct context_type {
         context_type() = default;
 
-        std::vector<game::sprite_t> sprites;
+        std::vector<sprite_t> sprites;
         std::vector<game::particle_emitter> particles;
         resources::shader_t sprite_shader;
         resources::shader_t particle_shader;

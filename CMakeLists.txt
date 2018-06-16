@@ -22,6 +22,7 @@ set(SOURCES
     src/resources.cc
     src/video.cc
     src/audio.cc
+    src/physics.cc
     src/collisions.cc
     src/particle_emitter.cc
     src/targa.cc

@@ -3,7 +3,7 @@
 
 namespace game {
 
-    direction_t get_vector_direction(const vec2 &target) {
+    /*direction_t get_vector_direction(const vec2 &target) {
         using namespace glm;
 
         const vec2 compass[] = {
@@ -51,6 +51,6 @@ namespace game {
             return std::make_tuple(true, get_vector_direction(diff), diff);
         else
             return std::make_tuple(false, direction_t::UP, diff);
-    }
+    }*/
 
 } // namespace game

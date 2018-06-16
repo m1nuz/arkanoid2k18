@@ -23,8 +23,8 @@ using json = nlohmann::json;
 namespace game {
 
     auto move_ball(ball_object& ball, const float dt, const float window_width) -> vec2 {
-        if (!ball.is_stuck) {
-            ball.position += ball.velocity * dt;
+        /*if (!ball.is_stuck) {
+            ball.body.current.position += ball.velocity * dt;
 
             if (ball.position.x <= 0.0f) {
                 ball.velocity.x = -ball.velocity.x;
@@ -38,14 +38,14 @@ namespace game {
             }
         }
 
-        return ball.position;
+        return ball.position;*/
     }
 
     auto reset_ball(context_t &ctx, ball_object& ball) -> void {
-        ball.position = ctx.player.position + vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2.f);
-        ball.size = vec2{BALL_RADIUS * 2.f};
+        ball.body.current.position = ctx.player.body.current.position + vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2.f);
+        ball.body.current.size = vec2{BALL_RADIUS * 2.f};
         ball.radius = BALL_RADIUS;
-        ball.velocity = INITIAL_BALL_VELOCITY;
+        ball.body.current.velocity = INITIAL_BALL_VELOCITY;
         ball.color = vec3{1.f};
         ball.is_stuck = true;
         ball.is_sticky = false;
@@ -56,8 +56,8 @@ namespace game {
     }
 
     auto reset_player(context_t &ctx, object& player) {
-        player.position = vec2{ctx.width / 2.f - PLAYER_SIZE.x / 2.f, ctx.height - PLAYER_SIZE.y};
-        player.size = PLAYER_SIZE;
+        player.body.current.position = vec2{ctx.width / 2.f - PLAYER_SIZE.x / 2.f, ctx.height - PLAYER_SIZE.y};
+        player.body.current.size = PLAYER_SIZE;
         player.color = vec3{1.f};
     }
 
@@ -66,10 +66,10 @@ namespace game {
             powerup_object p;
             p.type = powerup_t::speed;
             p.color = vec3{0.5f, 0.5f, 1.0f};
-            p.position = target.position;
+            p.body.current.position = target.body.current.position;
             p.duration = 0.f;
-            p.size = POWERUP_SIZE;
-            p.velocity = POWERUP_VELOCITY;
+            p.body.current.size = POWERUP_SIZE;
+            p.body.current.velocity = POWERUP_VELOCITY;
             if (auto tex = resources::get_texture(ctx, "speed"); tex)
                 p.texture = tex.value();
 
@@ -81,10 +81,10 @@ namespace game {
             powerup_object p;
             p.type = powerup_t::sticky;
             p.color = vec3{1.0f, 0.5f, 1.0f};
-            p.position = target.position;
+            p.body.current.position = target.body.current.position;
             p.duration = 20.f;
-            p.size = POWERUP_SIZE;
-            p.velocity = POWERUP_VELOCITY;
+            p.body.current.size = POWERUP_SIZE;
+            p.body.current.velocity = POWERUP_VELOCITY;
             if (auto tex = resources::get_texture(ctx, "sticky"); tex)
                 p.texture = tex.value();
 
@@ -96,10 +96,10 @@ namespace game {
             powerup_object p;
             p.type = powerup_t::pass_through;
             p.color = vec3{0.5f, 1.0f, 0.5f};
-            p.position = target.position;
+            p.body.current.position = target.body.current.position;
             p.duration = 10.f;
-            p.size = POWERUP_SIZE;
-            p.velocity = POWERUP_VELOCITY;
+            p.body.current.size = POWERUP_SIZE;
+            p.body.current.velocity = POWERUP_VELOCITY;
             if (auto tex = resources::get_texture(ctx, "passthrough"); tex)
                 p.texture = tex.value();
 
@@ -111,10 +111,10 @@ namespace game {
             powerup_object p;
             p.type = powerup_t::pad_size_increase;
             p.color = vec3{1.0f, 0.6f, 0.4};
-            p.position = target.position;
+            p.body.current.position = target.body.current.position;
             p.duration = 0.f;
-            p.size = POWERUP_SIZE;
-            p.velocity = POWERUP_VELOCITY;
+            p.body.current.size = POWERUP_SIZE;
+            p.body.current.velocity = POWERUP_VELOCITY;
             if (auto tex = resources::get_texture(ctx, "size-increase"); tex)
                 p.texture = tex.value();
 
@@ -124,7 +124,7 @@ namespace game {
     }
 
     auto activate_powerup(context_t &ctx, powerup_object &powerup) {
-        switch (powerup.type) {
+        /*switch (powerup.type) {
         case powerup_t::speed:
             ctx.ball.velocity *= 1.2f;
             break;
@@ -141,13 +141,13 @@ namespace game {
             break;
         default:
             break;
-        }
+        }*/
     }
 
     auto do_collisions(context_t &ctx, audio::context_t &atx) {
         using namespace glm;
 
-        auto &level = ctx.level;
+        /*auto &level = ctx.level;
         auto &player = ctx.player;
         auto &ball = ctx.ball;
 
@@ -226,7 +226,7 @@ namespace game {
                         audio::play_sound(atx, snd.value());
                 }
             }
-        }
+        }*/
     }
 
     auto is_same_powerup_active(const std::vector<powerup_object> &powerups, const powerup_t type) {
@@ -239,7 +239,7 @@ namespace game {
     }
 
     auto update_powerups(context_t &ctx, const float dt) -> void {
-        for (auto &powerup : ctx.powerups) {
+        /*for (auto &powerup : ctx.powerups) {
             powerup.position += powerup.velocity * dt;
 
             if (powerup.is_activated) {
@@ -272,7 +272,7 @@ namespace game {
 
         ctx.powerups.erase(std::remove_if(ctx.powerups.begin(), ctx.powerups.end(), [] (const auto& powerup) {
             return powerup.is_destroyed && !powerup.is_activated;
-        }), ctx.powerups.end());
+        }), ctx.powerups.end());*/
     }
 
     auto init(const std::string_view conf_path, const bool debug) -> std::optional<context_t> {
@@ -350,8 +350,8 @@ namespace game {
         ctx.level = levels[ctx.current_level];
 
         ctx.player.texture = player_tex.value();
-        ctx.player.position = vec2{ctx.width / 2.f - PLAYER_SIZE.x / 2.f, ctx.height - PLAYER_SIZE.y};
-        ctx.player.size = PLAYER_SIZE;
+        ctx.player.body.current.position = vec2{ctx.width / 2.f - PLAYER_SIZE.x / 2.f, ctx.height - PLAYER_SIZE.y};
+        ctx.player.body.current.size = PLAYER_SIZE;
 
         const auto ball_tex = resources::get_texture(ctx, "ball");
         if (!ball_tex) {
@@ -359,10 +359,10 @@ namespace game {
             return false;
         }
 
-        ctx.ball.position = ctx.player.position + vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2.f);
-        ctx.ball.size = vec2{BALL_RADIUS * 2.f};
+        ctx.ball.body.current.position = ctx.player.body.current.position + vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2.f);
+        ctx.ball.body.current.size = vec2{BALL_RADIUS * 2.f};
         ctx.ball.radius = BALL_RADIUS;
-        ctx.ball.velocity = INITIAL_BALL_VELOCITY;
+        ctx.ball.body.current.velocity = INITIAL_BALL_VELOCITY;
         ctx.ball.texture = ball_tex.value();
 
         const auto particle_tex = resources::get_texture(ctx, "particle");
@@ -383,6 +383,9 @@ namespace game {
     }
 
     auto process_events(context_t &ctx, const float dt) -> void {
+
+        constexpr float PP_VELOCITY = 100.f;
+
         SDL_Event ev;
         while (SDL_PollEvent(&ev)) {
             if (ev.key.keysym.sym == SDLK_ESCAPE)
@@ -393,24 +396,28 @@ namespace game {
                 auto &player = ctx.player;
                 auto &ball = ctx.ball;
 
+                player.body.current.acceleration = 0.001f;
+
                 switch (ev.key.keysym.sym) {
                 case SDLK_LEFT:
                 case SDLK_a:
-                    if (player.position.x >= 0) {
+                    /*if (player.position.x >= 0) {
                         player.position.x -= velocity;
 
                         if (ball.is_stuck)
                             ball.position.x -= velocity;
-                    }
+                    }*/
+                    physics::add_impulse(player.body, -vec2(PP_VELOCITY, 0));
                     break;
                 case SDLK_RIGHT:
                 case SDLK_d:
-                    if (player.position.x <= ctx.width - player.size.x) {
+                    /*if (player.position.x <= ctx.width - player.size.x) {
                         player.position.x += velocity;
 
                         if (ball.is_stuck)
                             ball.position.x += velocity;
-                    }
+                    }*/
+                    physics::add_impulse(player.body, vec2(PP_VELOCITY, 0));
                     break;
                 case SDLK_SPACE:
                     ball.is_stuck = false;
@@ -421,7 +428,22 @@ namespace game {
     }
 
     auto update(context_t &ctx, audio::context_t &atx, const float dt) -> void {
-        move_ball(ctx.ball, dt, ctx.width);
+        auto &level = ctx.level;
+        auto &player = ctx.player;
+        auto &ball = ctx.ball;
+
+        ball.body.previous = ball.body.current;
+        physics::integrate(ball.body.current, dt);
+
+        player.body.previous = player.body.current;
+        physics::integrate(player.body.current, dt);
+
+        for (auto &brick : level.bricks) {
+            brick.body.previous = brick.body.current;
+            physics::integrate(brick.body.current, dt);
+        }
+
+        /*move_ball(ctx.ball, dt, ctx.width);
         do_collisions(ctx, atx);
 
         update_emitter(ctx.particles, dt, ctx.ball, ctx.ball.is_stuck ? 0 : 1, vec2{ctx.ball.radius/2});
@@ -441,33 +463,45 @@ namespace game {
 
             if (ctx.shake_time <= 0.f)
                 ctx.render_options &= ~video::OP_SHAKE;
-        }
+        }*/
+
+
     }
 
-    auto draw(context_t &ctx, video::context_t &gtx) -> void {
+    auto draw(context_t &ctx, video::context_t &gtx, const float interpolation) -> void {
         if (ctx.state == state_t::active) {
             /*const auto background_tex = resources::get_texture(ctx, "background");
             if (background_tex)
                 video::draw_sprite(gtx, background_tex.value(), {0, 0}, {ctx.width, ctx.height}, 0.0f, {1.0f, 1.0f, 1.0f});*/
 
             const auto &level = ctx.level;
-            for (const auto& sp : level.bricks) {
-                if (!sp.is_destroyed)
-                    video::draw_sprite(gtx, sp.texture, sp.position, sp.size, sp.rotate, sp.color);
+            for (const auto& sp : level.bricks)
+                if (!sp.is_destroyed) {
+                    const auto sb = physics::interpolate(sp.body.current, sp.body.previous, interpolation);
+                    video::draw_sprite(gtx, sp.texture, sb.position, sb.size, sb.rotate, sp.color);
+                }
+
+            {
+                const auto &player = ctx.player;
+                const auto pb = physics::interpolate(player.body.current, player.body.previous, interpolation);
+
+                video::draw_sprite(gtx, player.texture, pb.position, pb.size, pb.rotate, player.color);
             }
 
-            const auto &player = ctx.player;
-            video::draw_sprite(gtx, player.texture, player.position, player.size, player.rotate, player.color);
-
             for (const auto &powerup : ctx.powerups)
-                if (!powerup.is_destroyed)
-                    video::draw_sprite(gtx, powerup.texture, powerup.position, powerup.size, 0.f, powerup.color);
+                if (!powerup.is_destroyed) {
+                    const auto pb = physics::interpolate(powerup.body.current, powerup.body.previous, interpolation);
+                    video::draw_sprite(gtx, powerup.texture, pb.position, pb.size, 0.f, powerup.color);
+                }
 
             const auto &particles = ctx.particles;
             video::draw_particles(gtx, particles);
 
-            const auto &ball = ctx.ball;
-            video::draw_sprite(gtx, ball.texture, ball.position, ball.size, ball.rotate, ball.color);
+            {
+                const auto &ball = ctx.ball;
+                const auto bb = physics::interpolate(ball.body.current, ball.body.previous, interpolation);
+                video::draw_sprite(gtx, ball.texture, bb.position, bb.size, bb.rotate, ball.color);
+            }
         }
     }
 
