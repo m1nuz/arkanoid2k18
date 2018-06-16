@@ -3,3 +3,6 @@
 
 Arkanoid like game
 
+## Screenshots
+[![](<https://github.com/m1nuz/arkanoid2k18/blob/master/screenshots/screenshot_2018-06-16_1_preview.png>)](https://github.com/m1nuz/arkanoid2k18/blob/master/screenshots/screenshot_2018-06-16_1.png)
+
