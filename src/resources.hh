@@ -77,31 +77,8 @@ namespace resources {
         std::vector<uint8_t> pixels;
     } image_t;
 
-    typedef struct sound_type {
-        sound_type() = default;
-
-        uint32_t buffer = 0;
-        int32_t size = 0;
-        int32_t format = 0;
-        int32_t frequency = 0;
-    } sound_t;
-
-    enum class audio_format : uint32_t {
-        unknown,
-        mono8,
-        mono16,
-        stereo8,
-        stereo16
-    };
-
-    typedef struct wave_type {
-        wave_type() = default;
-
-        int32_t frequency = 0;
-        uint32_t size = 0;
-        audio_format format = audio_format::unknown;
-        std::vector<uint8_t> bytes;
-    } wave_t;
+    struct sound_type;
+    typedef sound_type sound_t;
 
     auto init(game::context_t &ctx, const std::string_view assets_path) -> bool;
     auto cleanup(game::context_t &ctx) -> void;

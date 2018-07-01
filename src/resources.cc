@@ -1,11 +1,11 @@
 #include <json.hpp>
 #include <GL/glcore.h>
-#include <AL/al.h>
 
 #include "config.hh"
 #include "journal.hh"
 #include "resources.hh"
 #include "game.hh"
+#include "audio.hh"
 
 #include "texture_format.inl"
 
@@ -164,40 +164,7 @@ namespace resources {
         glBindTexture(GL_TEXTURE_2D, 0);
 
         return texture_t{id, GL_TEXTURE_2D, image.width, image.height, 0};
-    }
-
-    inline auto convert_audio_format(const audio_format fmt) -> ALenum {
-        switch (fmt) {
-        case audio_format::unknown:
-            return 0;
-        case audio_format::mono8:
-            return AL_FORMAT_MONO8;
-        case audio_format::mono16:
-            return AL_FORMAT_MONO16;
-        case audio_format::stereo8:
-            return AL_FORMAT_STEREO8;
-        case audio_format::stereo16:
-            return AL_FORMAT_STEREO16;
-        }
-
-        return AL_NONE;
-    }
-
-    static auto create_sound(const wave_t &wave) -> std::optional<sound_t> {
-        ALuint buf = 0;
-        ALenum format = convert_audio_format(wave.format);
-
-        alGenBuffers(1, &buf);
-        alBufferData(buf, format, &wave.bytes[0], wave.size, wave.frequency);
-
-        sound_t snd;
-        snd.buffer = buf;
-        snd.format = format;
-        snd.frequency = wave.frequency;
-        snd.size = wave.size;
-
-        return snd;
-    }
+    }    
 
     auto init(game::context_t &ctx, const std::string_view assets_path) -> bool {
         using namespace std;
@@ -333,7 +300,7 @@ namespace resources {
             glDeleteTextures(1, &tex.second.id);
 
         for (auto snd : ctx.sounds)
-            alDeleteBuffers(1, &snd.second.buffer);
+            destroy_sound(snd.second);
     }
 
 } // namespace resources

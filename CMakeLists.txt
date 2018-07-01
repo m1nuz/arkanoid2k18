@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(arkanoid2k18)
 
+option(OPENAL_BACKEND "Build with OpenAL" OFF)
+option(SDL_MIXER_BACKEND "Build with SDL Audio" ON)
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 include(glm)
@@ -30,9 +33,24 @@ set(SOURCES
     src/main.cc)
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 find_package(OpenAL REQUIRED)
 
 configure_file("${SHARED_INCLUDE_PATH}/config.h.in" "${SHARED_INCLUDE_PATH}/config.hh")
+
+set(APP_INCLUDES ${SDL2_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
+set(APP_LIBRARIES ${SDL2_LIBRARY})
+set(APP_DEFINES USING_SDL)
+
+if(OPENAL_BACKEND)
+    list(APPEND APP_DEFINES OPENAL_BACKEND)
+    list(APPEND APP_LIBRARIES ${OPENAL_LIBRARY})
+    list(APPEND APP_INCLUDES ${OPENAL_INCLUDE_DIR})
+elseif(SDL_MIXER_BACKEND)
+    list(APPEND APP_DEFINES SDL_MIXER_BACKEND)
+    list(APPEND APP_LIBRARIES ${SDL2MIXER_LIBRARY})
+    list(APPEND APP_INCLUDES ${SDL2MIXER_INCLUDE_DIR})
+endif()
 
 add_executable(${APP_NAME} ${SOURCES} ${HEADERS})
 
@@ -46,15 +64,11 @@ add_dependencies(${APP_NAME} demo_assets)
 
 target_include_directories(${APP_NAME} PUBLIC
     ${SHARED_INCLUDE_PATH}
-    ${SDL2_INCLUDE_DIRS}
-    ${GLM_INCLUDE_DIRS}
-    ${OPENAL_INCLUDE_DIR}
+    ${APP_INCLUDES}
     external
 )
 
-target_compile_definitions(${APP_NAME} PUBLIC
-    USING_SDL
-)
+target_compile_definitions(${APP_NAME} PUBLIC ${APP_DEFINES})
 
 if (UNIX)
     target_compile_options(${APP_NAME} PUBLIC
@@ -77,8 +91,7 @@ elseif (MSVC)
 endif()
 
 target_link_libraries(${APP_NAME} PUBLIC
-    ${SDL2_LIBRARY}
-    ${OPENAL_LIBRARY}
+    ${APP_LIBRARIES}
 )
 
 install(TARGETS ${APP_NAME} RUNTIME DESTINATION ${INSTALL_DIR})

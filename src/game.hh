@@ -11,6 +11,7 @@
 #include "particle_emitter.hh"
 #include "level.hh"
 #include "utils.hh"
+#include "audio.hh"
 
 namespace video {
 
@@ -18,13 +19,6 @@ namespace video {
     typedef context_type context_t;
 
 } // namespace video
-
-namespace audio {
-
-    struct context_type;
-    typedef context_type context_t;
-
-} // namespace audio
 
 namespace game {
 

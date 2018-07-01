@@ -278,6 +278,13 @@ namespace game {
     auto init(const std::string_view conf_path, const bool debug) -> std::optional<context_t> {
         using namespace std;
 
+        if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+            journal::critical("Unable to initialize SDL: %1", SDL_GetError());
+            return {};
+        }
+
+        atexit(SDL_Quit);
+
         auto contents = get_config(conf_path);
         if (!contents) {
             journal::critical("%1", "Can't read game config");

@@ -2,6 +2,9 @@
 #include <SDL2/SDL_rwops.h>
 
 #include "resources.hh"
+#include "audio.hh"
+
+#ifdef OPENAL_BACKEND
 
 #pragma pack(push, wave_align)
 #pragma pack(1)
@@ -78,3 +81,16 @@ auto load_wave(SDL_RWops *rw) -> std::optional<resources::wave_t> {
 
     return wave;
 }
+
+#elif SDL_MIXER_BACKEND
+auto load_wave(SDL_RWops *rw) -> std::optional<resources::wave_t> {
+    resources::wave_t wav;
+
+    wav = Mix_LoadWAV_RW(rw, 1);
+    if (!wav)
+        return {};
+
+    return wav;
+}
+
+#endif // SDL_MIXER_BACKEND
